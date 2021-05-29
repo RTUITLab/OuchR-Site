@@ -4,9 +4,11 @@ import { PageContainer } from '@ant-design/pro-layout';
 import moment from '@ant-design/pro-utils/node_modules/moment';
 import { Card, Col, Row, Tabs } from 'antd';
 import { FC, useEffect, useState } from 'react';
+import UserCard from './user';
 
 const ActivityCandidates: FC = () => {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
+  const [activeCandidate, setActiveCandidate] = useState<Candidate | null>(null);
 
   useEffect(() => {
     let cand: Candidate[] = [
@@ -154,7 +156,7 @@ const ActivityCandidates: FC = () => {
       return C;
     });
     setCandidates(cand);
-  });
+  }, []);
 
   const filterCandidates = (stage: CandidatesStages) => {
     let cands = candidates;
@@ -162,6 +164,10 @@ const ActivityCandidates: FC = () => {
     cands = cands.filter((C) => stage === C.stage);
 
     return cands;
+  };
+
+  const onSetActive = (id: string) => {
+    setActiveCandidate(candidates.find((C) => C.id === id) || null);
   };
 
   return (
@@ -173,30 +179,37 @@ const ActivityCandidates: FC = () => {
               <Tabs.TabPane tab="Заявки" key={CandidatesStages.Application}>
                 <CandidateTable
                   candidates={filterCandidates(CandidatesStages.Application)}
+                  onSetActive={onSetActive}
                 ></CandidateTable>
               </Tabs.TabPane>
               <Tabs.TabPane tab="Тестирование" key={CandidatesStages.Testing}>
                 <CandidateTable
                   candidates={filterCandidates(CandidatesStages.Testing)}
+                  onSetActive={onSetActive}
                 ></CandidateTable>
               </Tabs.TabPane>
               <Tabs.TabPane tab="Собеседование с HR" key={CandidatesStages.HrInterview}>
                 <CandidateTable
                   candidates={filterCandidates(CandidatesStages.HrInterview)}
+                  onSetActive={onSetActive}
                 ></CandidateTable>
               </Tabs.TabPane>
               <Tabs.TabPane tab="Техническое собеседование" key={CandidatesStages.TechInterview}>
                 <CandidateTable
                   candidates={filterCandidates(CandidatesStages.TechInterview)}
+                  onSetActive={onSetActive}
                 ></CandidateTable>
               </Tabs.TabPane>
               <Tabs.TabPane tab="Оффер" key={CandidatesStages.Offer}>
                 <CandidateTable
                   candidates={filterCandidates(CandidatesStages.Offer)}
+                  onSetActive={onSetActive}
                 ></CandidateTable>
               </Tabs.TabPane>
             </Tabs>
           </Card>
+
+          {activeCandidate && <UserCard candidate={activeCandidate} />}
         </Col>
       </Row>
     </PageContainer>

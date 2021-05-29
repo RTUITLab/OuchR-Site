@@ -59,6 +59,7 @@ export interface Candidate {
 
 interface CandidateTableProps {
   candidates: Candidate[];
+  onSetActive: Function;
 }
 
 const CandidateTable: FC<CandidateTableProps> = (props) => {
@@ -66,8 +67,14 @@ const CandidateTable: FC<CandidateTableProps> = (props) => {
     <Table
       columns={columns}
       dataSource={props.candidates}
-      className="dassdsda"
       scroll={{ x: 1000 }}
+      onRow={(record) => {
+        return {
+          onClick: () => {
+            props.onSetActive(record.id);
+          },
+        };
+      }}
     ></Table>
   );
 };

@@ -8,4 +8,34 @@
   justify-content: flex-start;
   margin-bottom: 24px;
   text-align: center;
+
+  & > img {
+    width: 104px;
+    height: 104px;
+    margin-bottom: 20px;
+  }
+
+  .signature {
+    display: inline-block;
+    padding-left: 24px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .name {
+    margin-bottom: 12px;
+    // margin-bottom: 4px;
+    color: @heading-color;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+  }
+}
+
+.summary {
+  font-weight: 400;
+
+  * {
+    display: inline-block !important;
+  }
 }

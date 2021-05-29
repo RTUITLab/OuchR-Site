@@ -28,36 +28,6 @@ export default defineConfig({
       component: '../layouts/BlankLayout',
       routes: [
         {
-          path: '/user',
-          component: '../layouts/UserLayout',
-          routes: [
-            {
-              path: '/user/login',
-              name: 'login',
-              component: './User/login',
-            },
-            {
-              path: '/user',
-              redirect: '/user/login',
-            },
-            {
-              name: 'register-result',
-              icon: 'smile',
-              path: '/user/register-result',
-              component: './user/register-result',
-            },
-            {
-              name: 'register',
-              icon: 'smile',
-              path: '/user/register',
-              component: './user/register',
-            },
-            {
-              component: '404',
-            },
-          ],
-        },
-        {
           path: '/',
           component: '../layouts/BasicLayout',
           Routes: ['src/pages/Authorized'],
@@ -91,61 +61,19 @@ export default defineConfig({
               ],
             },
             {
-              path: '/dashboard',
-              name: 'Общие метрики',
-              icon: 'dashboard',
-              component: './dashboard/analysis',
-              routes: [
-                {
-                  path: '/',
-                  component: './dashboard/analysis',
-                },
-                // {
-                //   name: 'Анализ',
-                //   icon: 'smile',
-                //   path: '/dashboard/analysis',
-                //   component: './dashboard/analysis',
-                // },
-                // {
-                //   name: 'monitor',
-                //   icon: 'smile',
-                //   path: '/dashboard/monitor',
-                //   component: './dashboard/monitor',
-                // },
-                // {
-                //   name: 'workplace',
-                //   icon: 'smile',
-                //   path: '/dashboard/workplace',
-                //   component: './dashboard/workplace',
-                // },
-              ],
-            },
-            {
-              path: '/form',
+              path: '/smm',
               icon: 'form',
               name: 'SMM',
               routes: [
                 {
                   path: '/',
-                  redirect: '/form/basic-form',
+                  redirect: '/smm/metrics',
                 },
                 {
-                  name: 'basic-form',
+                  name: 'Метрики',
                   icon: 'smile',
-                  path: '/form/basic-form',
+                  path: '/smm/metrics',
                   component: './form/basic-form',
-                },
-                {
-                  name: 'step-form',
-                  icon: 'smile',
-                  path: '/form/step-form',
-                  component: './form/step-form',
-                },
-                {
-                  name: 'advanced-form',
-                  icon: 'smile',
-                  path: '/form/advanced-form',
-                  component: './form/advanced-form',
                 },
               ],
             },
