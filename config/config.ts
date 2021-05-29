@@ -1,4 +1,3 @@
-// https://umijs.org/config/
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
@@ -13,10 +12,8 @@ export default defineConfig({
     type: 'browser',
   },
   locale: {
-    // default zh-CN
-    default: 'zh-CN',
+    default: 'en-US',
     antd: true,
-    // default true, when it is true, will use `navigator.language` overwrite default
     baseNavigator: true,
   },
   dynamicImport: {
@@ -25,7 +22,6 @@ export default defineConfig({
   targets: {
     ie: 11,
   },
-  // umi routes: https://umijs.org/docs/routing
   routes: [
     {
       path: '/',
@@ -69,41 +65,65 @@ export default defineConfig({
           routes: [
             {
               path: '/',
-              redirect: '/dashboard/analysis',
+              redirect: '/activity/main',
             },
             {
-              path: '/dashboard',
-              name: 'dashboard',
-              icon: 'dashboard',
+              name: 'Моя активность',
+              icon: 'user',
+              path: '/activity',
               routes: [
                 {
                   path: '/',
-                  redirect: '/dashboard/analysis',
+                  redirect: '/activity/main',
                 },
                 {
-                  name: 'analysis',
+                  name: 'Главная',
                   icon: 'smile',
-                  path: '/dashboard/analysis',
+                  path: '/activity/main',
+                  component: './my-activity/main',
+                },
+                {
+                  name: 'Мои кандидаты',
+                  icon: 'smile',
+                  path: '/activity/candidates',
+                  component: './my-activity/candidates',
+                },
+              ],
+            },
+            {
+              path: '/dashboard',
+              name: 'Общие метрики',
+              icon: 'dashboard',
+              component: './dashboard/analysis',
+              routes: [
+                {
+                  path: '/',
                   component: './dashboard/analysis',
                 },
-                {
-                  name: 'monitor',
-                  icon: 'smile',
-                  path: '/dashboard/monitor',
-                  component: './dashboard/monitor',
-                },
-                {
-                  name: 'workplace',
-                  icon: 'smile',
-                  path: '/dashboard/workplace',
-                  component: './dashboard/workplace',
-                },
+                // {
+                //   name: 'Анализ',
+                //   icon: 'smile',
+                //   path: '/dashboard/analysis',
+                //   component: './dashboard/analysis',
+                // },
+                // {
+                //   name: 'monitor',
+                //   icon: 'smile',
+                //   path: '/dashboard/monitor',
+                //   component: './dashboard/monitor',
+                // },
+                // {
+                //   name: 'workplace',
+                //   icon: 'smile',
+                //   path: '/dashboard/workplace',
+                //   component: './dashboard/workplace',
+                // },
               ],
             },
             {
               path: '/form',
               icon: 'form',
-              name: 'form',
+              name: 'SMM',
               routes: [
                 {
                   path: '/',
@@ -131,8 +151,8 @@ export default defineConfig({
             },
             {
               path: '/list',
-              icon: 'table',
-              name: 'list',
+              icon: 'profile',
+              name: 'HR',
               routes: [
                 {
                   path: '/list/search',
@@ -189,8 +209,8 @@ export default defineConfig({
             },
             {
               path: '/profile',
-              name: 'profile',
-              icon: 'profile',
+              name: 'Календарь',
+              icon: 'table',
               routes: [
                 {
                   path: '/',
@@ -207,29 +227,6 @@ export default defineConfig({
                   icon: 'smile',
                   path: '/profile/advanced',
                   component: './profile/advanced',
-                },
-              ],
-            },
-            {
-              name: 'result',
-              icon: 'CheckCircleOutlined',
-              path: '/result',
-              routes: [
-                {
-                  path: '/',
-                  redirect: '/result/success',
-                },
-                {
-                  name: 'success',
-                  icon: 'smile',
-                  path: '/result/success',
-                  component: './result/success',
-                },
-                {
-                  name: 'fail',
-                  icon: 'smile',
-                  path: '/result/fail',
-                  component: './result/fail',
                 },
               ],
             },
@@ -322,9 +319,10 @@ export default defineConfig({
       ],
     },
   ],
-  // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
     'primary-color': defaultSettings.primaryColor,
+    'layout-sider-background': '#00396e',
+    'menu-dark-inline-submenu-bg': '#00213a',
   },
   title: false,
   ignoreMomentLocale: true,

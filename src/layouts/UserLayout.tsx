@@ -5,7 +5,7 @@ import type { ConnectProps } from 'umi';
 import { Link, SelectLang, useIntl, connect, FormattedMessage } from 'umi';
 import React from 'react';
 import type { ConnectState } from '@/models/connect';
-import logo from '../assets/logo.svg';
+import logo from '../assets/rosatom_logo.png';
 import styles from './UserLayout.less';
 
 export type UserLayoutProps = {
