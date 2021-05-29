@@ -168,7 +168,7 @@ const ActivityCandidates: FC = () => {
     <PageContainer>
       <Row>
         <Col md={24}>
-          <Card>
+          <Card style={{ marginBottom: '24px' }}>
             <Tabs defaultActiveKey="1">
               <Tabs.TabPane tab="Заявки" key={CandidatesStages.Application}>
                 <CandidateTable
