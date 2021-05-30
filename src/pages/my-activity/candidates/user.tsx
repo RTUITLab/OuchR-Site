@@ -48,20 +48,20 @@ const UserCard: FC<UserCardProps> = (props) => {
             onFinish={onFinish}
             initialValues={{
               education: props.candidate.education,
-              birth: moment(props.candidate.birthday),
-              experience: props.candidate.workExperience,
-              current: props.candidate.currentIntership,
+              // birth: moment(props.candidate.birthday),
+              // experience: props.candidate.workExperience,
+              // current: props.candidate.currentIntership,
               available: props.candidate.availableInterships,
             }}
           >
             <Form.Item label="Дата рождения" name="birth">
-              <DatePicker />
+              <DatePicker value={moment(props.candidate.birthday)} />
             </Form.Item>
             <Form.Item label="Образование" name="education">
               <Input />
             </Form.Item>
             <Form.Item label="Опыт работы" name="experience">
-              <Input.TextArea rows={3} />
+              <Input.TextArea rows={3} value={props.candidate.workExperience} />
             </Form.Item>
             <Form.Item label="Доступные вакансии" name="available">
               <Input.TextArea rows={3} />
@@ -71,7 +71,7 @@ const UserCard: FC<UserCardProps> = (props) => {
               name="current"
               tooltip="Для которой проходится собеседование"
             >
-              <Input value={props.candidate.name} />
+              {props.candidate.currentIntership}
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               <Button type="primary" htmlType="submit" style={{ marginRight: '16px' }}>

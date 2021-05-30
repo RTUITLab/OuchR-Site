@@ -2,7 +2,7 @@ import { ICandidate } from '@/models/candidate';
 import { apiUrl } from '@/models/global';
 import { PageContainer } from '@ant-design/pro-layout';
 import moment from '@ant-design/pro-utils/node_modules/moment';
-import { Avatar, Card, Col, Row, Skeleton, Calendar } from 'antd';
+import { Avatar, Card, Col, Row, Skeleton, Calendar, Tooltip } from 'antd';
 import { FC, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -80,12 +80,20 @@ const CalendarIndex: FC = () => {
               dateCellRender={(e) => {
                 const res = confs.filter((C) => C.start.slice(0, 10) === e.format().slice(0, 10));
                 return res.map((R) => (
-                  <div
-                    onClick={() => history.push('/activity/candidates?userId=' + R.userId)}
-                    style={{ marginBottom: '8px' }}
+                  <Tooltip
+                    title={
+                      <a target="_blank" href={R.description}>
+                        Ссылка на конференцию
+                      </a>
+                    }
                   >
-                    {R.title}
-                  </div>
+                    <div
+                      onClick={() => history.push('/activity/candidates?userId=' + R.userId)}
+                      style={{ marginBottom: '8px' }}
+                    >
+                      {R.title}
+                    </div>
+                  </Tooltip>
                 ));
               }}
             />
