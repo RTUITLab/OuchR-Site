@@ -43,10 +43,28 @@ interface GoingToTest {
   pthotoUrl: string;
 }
 
+interface IStatistics {
+  work: number;
+  interviewNow: number;
+  interviewTotal: number;
+  potencial: number;
+}
+
+const convertNumber = (num: number) => {
+  const newNum = [];
+  while (num > 0) {
+    newNum.push(num % 1000);
+    num = Math.floor(num / 1000);
+  }
+
+  return newNum.reverse().join(',') || num;
+};
+
 const ActivityMain: FC = (props) => {
   const [testTasks, setTestTasks] = useState<TestTask[]>([]);
   const [interviews, setInterviews] = useState<Interview[]>([]);
   const [goingToTest, setGoingToTest] = useState<GoingToTest[]>([]);
+  const [statistics, setStatistics] = useState<IStatistics | null>(null);
 
   useEffect(() => {
     fetch(apiUrl + 'MyCandidates/readyToCheck').then((data) => {
@@ -93,6 +111,12 @@ const ActivityMain: FC = (props) => {
         setInterviews(interviews);
       });
     });
+
+    fetch(apiUrl + 'Statistic/mainNumbers').then((data) => {
+      data.json().then((stat: IStatistics) => {
+        setStatistics(stat);
+      });
+    });
   }, []);
 
   const approveTest = (id: string) => {
@@ -117,17 +141,25 @@ const ActivityMain: FC = (props) => {
           </Col>
           <Col xs={24} sm={24} md={{ span: '12' }}>
             <Card bordered={false}>
-              <Row className={styles.stat}>
-                <Col sm={8} xs={8}>
-                  <Info title="Принято" value="56" bordered />
-                </Col>
-                <Col sm={8} xs={8}>
-                  <Info title="Собеседуется" value="8 / 24" bordered />
-                </Col>
-                <Col sm={8} xs={8}>
-                  <Info title="Потенциал" value="2,223" />
-                </Col>
-              </Row>
+              {statistics ? (
+                <Row className={styles.stat}>
+                  <Col sm={8} xs={8}>
+                    <Info title="Принято" value={convertNumber(statistics.work)} bordered />
+                  </Col>
+                  <Col sm={8} xs={8}>
+                    <Info
+                      title="Собеседуется"
+                      value={statistics.interviewNow + ' / ' + statistics.interviewTotal}
+                      bordered
+                    />
+                  </Col>
+                  <Col sm={8} xs={8}>
+                    <Info title="Потенциал" value={convertNumber(statistics.potencial)} />
+                  </Col>
+                </Row>
+              ) : (
+                ''
+              )}
             </Card>
           </Col>
         </Row>
