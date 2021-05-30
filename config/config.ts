@@ -90,7 +90,7 @@ export default defineConfig({
                   name: 'Метрики',
                   icon: 'smile',
                   path: '/hr/metrics',
-                  component: './form/basic-form',
+                  component: './hr/metrics',
                 },
               ],
             },

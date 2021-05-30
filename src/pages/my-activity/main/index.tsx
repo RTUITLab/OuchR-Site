@@ -78,17 +78,21 @@ const ActivityMain: FC = (props) => {
       });
     });
 
-    let interviews: Interview[] = [
-      {
-        id: '1',
-        name: 'Иванов Иван',
-        intership: 'Машинное обучение',
-        date: '2021-05-29T13:26:07.097Z',
-        pthotoUrl: '',
-      },
-    ];
+    fetch(apiUrl + 'MyCandidates/scheduledConferences').then((data) => {
+      data.json().then((cand: ICandidate[]) => {
+        const interviews: Interview[] = cand.map((C) => {
+          return {
+            id: C.userId,
+            name: C.name,
+            intership: C.currentIntership,
+            date: C.events[0].date,
+            pthotoUrl: C.pthotoUrl!,
+          };
+        });
 
-    setInterviews(interviews);
+        setInterviews(interviews);
+      });
+    });
   }, []);
 
   const approveTest = (id: string) => {

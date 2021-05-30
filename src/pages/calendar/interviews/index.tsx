@@ -6,24 +6,32 @@ import { Avatar, Card, Col, Row, Skeleton } from 'antd';
 import { FC, useEffect, useState } from 'react';
 
 const Calendar: FC = () => {
-  const [candidate, setCandidate] = useState<ICandidate[]>([]);
+  const [candidates, setCandidates] = useState<ICandidate[]>([]);
 
   useEffect(() => {
     fetch(apiUrl + 'MyCandidates/waitTimeConfirmation').then((data) => {
       data.json().then((cand: ICandidate[]) => {
-        setCandidate(cand);
+        setCandidates(cand);
       });
     });
   }, []);
 
+  const approveTime = (id: string) => {
+    fetch(apiUrl + 'ControlFlow/approveTime/' + id, { method: 'POST' }).then(() =>
+      setCandidates(candidates.filter((C) => C.userId !== id)),
+    );
+  };
+
   return (
     <PageContainer title="Заявки на собеседование">
       <Row gutter={24}>
-        {candidate.slice(0, 3).map((C) => (
+        {candidates.slice(0, 3).map((C) => (
           <Col xs={24} lg={8} style={{ marginBottom: '24px' }}>
             <Card
               actions={[
-                <a style={{ color: '#1890ff' }}>Принято</a>,
+                <a style={{ color: '#1890ff' }} onClick={() => approveTime(C.userId)}>
+                  Принято
+                </a>,
                 <a style={{ color: 'rgba(0, 0, 0, 0.25)' }}>Отклонено</a>,
               ]}
             >
@@ -47,6 +55,11 @@ const Calendar: FC = () => {
             </Card>
           </Col>
         ))}
+      </Row>
+      <Row>
+        <Col>
+          <Card title="Расписание событий">{/* <Calendar></Calendar> */}</Card>
+        </Col>
       </Row>
     </PageContainer>
   );
