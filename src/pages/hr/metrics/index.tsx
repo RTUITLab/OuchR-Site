@@ -1,7 +1,7 @@
 import { apiUrl } from '@/models/global';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Funnel } from '@antv/g2plot';
-import { Card, Col, Row, List } from 'antd';
+import { Card, Col, Row, List, Table } from 'antd';
 import { FC, useEffect, useState } from 'react';
 
 interface FunnelData {
@@ -64,14 +64,46 @@ const HrMetrics: FC = () => {
               <List
                 itemLayout="horizontal"
                 dataSource={[
-                  <Row>
-                    <Col>Заявки:</Col>
-                    <Col flex="auto">{funnel.applicationsTotal}</Col>
-                  </Row>,
+                  <div style={{ display: 'grid', gridTemplateColumns: '90% 1fr', width: '100%' }}>
+                    <div style={{ fontWeight: 600, color: '#1890ff' }}>Заявки:</div>
+                    <div>{funnel.applicationsTotal}</div>
+                    <div style={{ color: '#acacac' }}>Отказов от предлагаемых вакансий:</div>
+                    <div>{funnel.applicationsDropped}</div>
+                  </div>,
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '90% 1fr', width: '100%' }}>
+                    <div style={{ fontWeight: 600, color: '#63daab' }}>Тестирование:</div>
+                    <div>{funnel.testTotal}</div>
+                    <div style={{ color: '#acacac' }}>Пропуск даты сдачи теста:</div>
+                    <div>{funnel.testDateBeingLate}</div>
+                    <div style={{ color: '#acacac' }}>Отказ от выполнения теста:</div>
+                    <div>{funnel.testRenouncement}</div>
+                  </div>,
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '90% 1fr', width: '100%' }}>
+                    <div style={{ fontWeight: 600, color: '#657798' }}>Собеседование:</div>
+                    <div>{funnel.interviewTotal}</div>
+                    <div style={{ color: '#acacac' }}>Пропуск собеседования:</div>
+                    <div>{funnel.interviewSkip}</div>
+                    <div style={{ color: '#acacac' }}>Провал собеседования:</div>
+                    <div>{funnel.interviewFailed}</div>
+                  </div>,
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '90% 1fr', width: '100%' }}>
+                    <div style={{ fontWeight: 600, color: '#f7c122' }}>Оффер:</div>
+                    <div>{funnel.offer}</div>
+                    <div style={{ color: '#acacac' }}>Отказ от оффера:</div>
+                    <div>{funnel.offerRenouncement}</div>
+                  </div>,
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '90% 1fr', width: '100%' }}>
+                    <div style={{ fontWeight: 600, color: '#7722f7' }}>Выход на работу: :</div>
+                    <div>{funnel.offer}</div>
+                  </div>,
                 ]}
-                // renderItem={(item) => {
-                //   return()
-                // }}
+                renderItem={(item: any) => {
+                  return <List.Item>{item}</List.Item>;
+                }}
               />
             </Card>
           ) : (
