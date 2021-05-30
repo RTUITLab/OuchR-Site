@@ -1,17 +1,34 @@
-import { Candidate, ICandidate } from '@/models/candidate';
+import { ICandidate } from '@/models/candidate';
 import { apiUrl } from '@/models/global';
 import { PageContainer } from '@ant-design/pro-layout';
 import moment from '@ant-design/pro-utils/node_modules/moment';
-import { Avatar, Card, Col, Row, Skeleton } from 'antd';
+import { Avatar, Card, Col, Row, Skeleton, Calendar } from 'antd';
 import { FC, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
-const Calendar: FC = () => {
+interface IConf {
+  title: string;
+  description: string;
+  start: string;
+  end: string;
+  userId: string;
+}
+
+const CalendarIndex: FC = () => {
   const [candidates, setCandidates] = useState<ICandidate[]>([]);
+  const [confs, setConfs] = useState<IConf[]>([]);
+
+  const history = useHistory();
 
   useEffect(() => {
     fetch(apiUrl + 'MyCandidates/waitTimeConfirmation').then((data) => {
       data.json().then((cand: ICandidate[]) => {
         setCandidates(cand);
+      });
+    });
+    fetch(apiUrl + 'Calendar').then((data) => {
+      data.json().then((confs: IConf[]) => {
+        setConfs(confs);
       });
     });
   }, []);
@@ -57,12 +74,26 @@ const Calendar: FC = () => {
         ))}
       </Row>
       <Row>
-        <Col>
-          <Card title="Расписание событий">{/* <Calendar></Calendar> */}</Card>
+        <Col xs={24}>
+          <Card title="Расписание событий">
+            <Calendar
+              dateCellRender={(e) => {
+                const res = confs.filter((C) => C.start.slice(0, 10) === e.format().slice(0, 10));
+                return res.map((R) => (
+                  <div
+                    onClick={() => history.push('/activity/candidates?userId=' + R.userId)}
+                    style={{ marginBottom: '8px' }}
+                  >
+                    {R.title}
+                  </div>
+                ));
+              }}
+            />
+          </Card>
         </Col>
       </Row>
     </PageContainer>
   );
 };
 
-export default Calendar;
+export default CalendarIndex;

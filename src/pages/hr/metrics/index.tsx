@@ -53,14 +53,14 @@ const HrMetrics: FC = () => {
   return (
     <PageContainer title="HR метрики">
       <Row gutter={24}>
-        <Col xs={24} md={16}>
+        <Col xs={24} md={16} style={{ marginBottom: '24px' }}>
           <Card title="Воронка по всем вакансиям">
             <div id="funnel"></div>
           </Card>
         </Col>
-        <Col xs={24} md={8}>
+        <Col xs={24} md={8} style={{ marginBottom: '24px' }}>
           {funnel ? (
-            <Card title="Детализация воронки">
+            <Card title="Детализация воронки" style={{ height: '100%', marginBottom: '24px' }}>
               <List
                 itemLayout="horizontal"
                 dataSource={[

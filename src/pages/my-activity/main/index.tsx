@@ -8,6 +8,7 @@ import moment from 'moment';
 import 'moment/locale/ru';
 import { ICandidate } from '@/models/candidate';
 import { apiUrl } from '@/models/global';
+import { Link, useHistory } from 'react-router-dom';
 moment.locale('ru');
 
 const Info: FC<{
@@ -65,6 +66,8 @@ const ActivityMain: FC = (props) => {
   const [interviews, setInterviews] = useState<Interview[]>([]);
   const [goingToTest, setGoingToTest] = useState<GoingToTest[]>([]);
   const [statistics, setStatistics] = useState<IStatistics | null>(null);
+
+  const history = useHistory();
 
   useEffect(() => {
     fetch(apiUrl + 'MyCandidates/readyToCheck').then((data) => {
@@ -177,7 +180,10 @@ const ActivityMain: FC = (props) => {
               <>
                 {index < 6 && (
                   <Card.Grid className={styles.gridCard} key={index}>
-                    <div className={styles.header}>
+                    <div
+                      className={styles.header}
+                      onClick={() => history.push('/activity/candidates?userId=' + task.id)}
+                    >
                       <Avatar
                         src={task.pthotoUrl!}
                         style={{ marginBottom: '8px', borderRadius: 100 }}
@@ -216,6 +222,7 @@ const ActivityMain: FC = (props) => {
               dataSource={interviews}
               renderItem={(item) => (
                 <List.Item
+                  onClick={() => history.push('/activity/candidates?userId=' + item.id)}
                   actions={[
                     <div className={styles.date}>
                       <div>{moment(item.date).format('h:mm')}</div>
@@ -242,7 +249,10 @@ const ActivityMain: FC = (props) => {
                 <List
                   dataSource={goingToTest}
                   renderItem={(item) => (
-                    <div className={styles.goingListItem}>
+                    <div
+                      className={styles.goingListItem}
+                      onClick={() => history.push('/activity/candidates?userId=' + item.id)}
+                    >
                       <Avatar src={item.pthotoUrl}></Avatar>
                       <div>{item.name}</div>
                     </div>

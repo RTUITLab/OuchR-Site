@@ -12,8 +12,8 @@ const columns: ColumnsType<ICandidate> = [
   },
   {
     title: 'Направление',
-    dataIndex: 'direction',
-    key: 'direction',
+    dataIndex: 'currentIntership',
+    key: 'currentIntership',
   },
   {
     title: 'Дата подачи зявки',

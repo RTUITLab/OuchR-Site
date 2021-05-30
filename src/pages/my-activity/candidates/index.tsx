@@ -13,6 +13,9 @@ const ActivityCandidates: FC = () => {
   const [activeCandidate, setActiveCandidate] = useState<ICandidate | null>(null);
 
   useEffect(() => {
+    let user = location.search.split('&').find((p) => p.indexOf('userId')) || '';
+    if (user) user = user.split('=')[1] || '';
+
     fetch(apiUrl + 'MyCandidates').then((data) => {
       data.json().then((cand: ICandidate[]) => {
         cand = cand.map((C) => {
@@ -27,6 +30,7 @@ const ActivityCandidates: FC = () => {
           C.more = <a style={{ display: 'flex', justifyContent: 'center' }}>...</a>;
           return C;
         });
+        if (user) setActiveCandidate(cand.find((C) => C.userId == user) || null);
         setCandidates(cand);
       });
     });
