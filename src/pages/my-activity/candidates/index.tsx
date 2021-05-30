@@ -1,4 +1,6 @@
-import CandidateTable, { Candidate, CandidatesStages } from '@/components/CandidateTable';
+import CandidateTable from '@/components/CandidateTable';
+import { CandidatesStages, ICandidate } from '@/models/candidate';
+import { apiUrl } from '@/models/global';
 import { DownloadOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import moment from '@ant-design/pro-utils/node_modules/moment';
@@ -7,167 +9,40 @@ import { FC, useEffect, useState } from 'react';
 import UserCard from './user';
 
 const ActivityCandidates: FC = () => {
-  const [candidates, setCandidates] = useState<Candidate[]>([]);
-  const [activeCandidate, setActiveCandidate] = useState<Candidate | null>(null);
+  const [candidates, setCandidates] = useState<ICandidate[]>([]);
+  const [activeCandidate, setActiveCandidate] = useState<ICandidate | null>(null);
 
   useEffect(() => {
-    let cand: Candidate[] = [
-      {
-        id: '123456',
-        name: 'Sjdjss',
-        stage: CandidatesStages.Application,
-        direction: 'Машинное обучение',
-        date: '2021-05-29T13:26:07.097Z',
-        comment: 'Commmmmmment',
-        summary: 'https://google.com',
-      },
-      {
-        id: '1234567',
-        name: 'USbrfvhjd sddgfhjkjl',
-        stage: CandidatesStages.Application,
-        direction: 'asdfghjkl',
-        date: '2021-05-29T13:26:07.097Z',
-        comment: '',
-        summary: 'https://google.com',
-      },
-      {
-        id: '123456',
-        name: 'Sjdjss',
-        stage: CandidatesStages.Application,
-        direction: 'Машинное обучение',
-        date: '2021-05-29T13:26:07.097Z',
-        comment: 'Commmmmmment',
-        summary: 'https://google.com',
-      },
-      {
-        id: '1234567',
-        name: 'USbrfvhjd sddgfhjkjl',
-        stage: CandidatesStages.Application,
-        direction: 'asdfghjkl',
-        date: '2021-05-29T13:26:07.097Z',
-        comment: '',
-        summary: 'https://google.com',
-      },
-      {
-        id: '123456',
-        name: 'Sjdjss',
-        stage: CandidatesStages.Application,
-        direction: 'Машинное обучение',
-        date: '2021-05-29T13:26:07.097Z',
-        comment: 'Commmmmmment',
-        summary: 'https://google.com',
-      },
-      {
-        id: '1234567',
-        name: 'USbrfvhjd sddgfhjkjl',
-        stage: CandidatesStages.Application,
-        direction: 'asdfghjkl',
-        date: '2021-05-29T13:26:07.097Z',
-        comment: '',
-        summary: 'https://google.com',
-      },
-      {
-        id: '123456',
-        name: 'Sjdjss',
-        stage: CandidatesStages.Testing,
-        direction: 'Машинное обучение',
-        date: '2021-05-29T13:26:07.097Z',
-        comment: 'Commmmmmment',
-        summary: 'https://google.com',
-      },
-      {
-        id: '1234567',
-        name: 'USbrfvhjd sddgfhjkjl',
-        stage: CandidatesStages.Testing,
-        direction: 'asdfghjkl',
-        date: '2021-05-29T13:26:07.097Z',
-        comment: '',
-        summary: 'https://google.com',
-      },
-      {
-        id: '123456',
-        name: 'Sjdjss',
-        stage: CandidatesStages.TechInterview,
-        direction: 'Машинное обучение',
-        date: '2021-05-29T13:26:07.097Z',
-        comment: 'Commmmmmment',
-        summary: 'https://google.com',
-      },
-      {
-        id: '1234567',
-        name: 'USbrfvhjd sddgfhjkjl',
-        stage: CandidatesStages.Offer,
-        direction: 'asdfghjkl',
-        date: '2021-05-29T13:26:07.097Z',
-        comment: '',
-        summary: 'https://google.com',
-      },
-      {
-        id: '123456',
-        name: 'Sjdjss',
-        stage: CandidatesStages.Offer,
-        direction: 'Машинное обучение',
-        date: '2021-05-29T13:26:07.097Z',
-        comment: 'Commmmmmment',
-        summary: 'https://google.com',
-      },
-      {
-        id: '1234567',
-        name: 'USbrfvhjd sddgfhjkjl',
-        stage: CandidatesStages.HrInterview,
-        direction: 'asdfghjkl',
-        date: '2021-05-29T13:26:07.097Z',
-        comment: '',
-        summary: 'https://google.com',
-      },
-      {
-        id: '123456',
-        name: 'Sjdjss',
-        stage: CandidatesStages.HrInterview,
-        direction: 'Машинное обучение',
-        date: '2021-05-29T13:26:07.097Z',
-        comment: 'Commmmmmment',
-        summary: 'https://google.com',
-      },
-      {
-        id: '1234567',
-        name: 'USbrfvhjd sddgfhjkjl',
-        stage: CandidatesStages.HrInterview,
-        direction: 'asdfghjkl',
-        date: '2021-05-29T13:26:07.097Z',
-        comment: '',
-        summary: 'https://google.com',
-      },
-    ];
-
-    cand = cand.map((C) => {
-      C.comment = C.comment || '-';
-      C.summary = (
-        <a style={{ display: 'grid', margin: 'auto' }} href={C.summary.toString()}>
-          <DownloadOutlined />
-        </a>
-      );
-      C.date = moment(C.date).format('YYYY-MM-DD hh:mm:ss');
-      C.more = (
-        <a style={{ display: 'flex', justifyContent: 'center' }} href={C.summary.toString()}>
-          ...
-        </a>
-      );
-      return C;
+    fetch(apiUrl + 'MyCandidates').then((data) => {
+      data.json().then((cand: ICandidate[]) => {
+        cand = cand.map((C) => {
+          C.comment = C.comment || '-';
+          C.currentStage = C.events[0].stage;
+          C.summary = (
+            <a style={{ display: 'grid', margin: 'auto' }} href={C.resumeUrl}>
+              <DownloadOutlined />
+            </a>
+          );
+          C.date = moment(C.events.find((E) => E.stage === 0)?.date).format('YYYY-MM-DD hh:mm:ss');
+          C.more = <a style={{ display: 'flex', justifyContent: 'center' }}>...</a>;
+          return C;
+        });
+        setCandidates(cand);
+      });
     });
-    setCandidates(cand);
   }, []);
 
   const filterCandidates = (stage: CandidatesStages) => {
     let cands = candidates;
 
-    cands = cands.filter((C) => stage === C.stage);
+    cands = cands.filter((C) => stage === C.currentStage);
 
     return cands;
   };
 
   const onSetActive = (id: string) => {
-    setActiveCandidate(candidates.find((C) => C.id === id) || null);
+    console.log(id);
+    setActiveCandidate(candidates.find((C) => C.userId === id) || null);
   };
 
   return (
@@ -176,31 +51,25 @@ const ActivityCandidates: FC = () => {
         <Col md={24}>
           <Card style={{ marginBottom: '24px' }}>
             <Tabs defaultActiveKey="1">
-              <Tabs.TabPane tab="Заявки" key={CandidatesStages.Application}>
+              <Tabs.TabPane tab="Заявки" key={1}>
                 <CandidateTable
                   candidates={filterCandidates(CandidatesStages.Application)}
                   onSetActive={onSetActive}
                 ></CandidateTable>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="Тестирование" key={CandidatesStages.Testing}>
+              <Tabs.TabPane tab="Тестирование" key={2}>
                 <CandidateTable
                   candidates={filterCandidates(CandidatesStages.Testing)}
                   onSetActive={onSetActive}
                 ></CandidateTable>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="Собеседование с HR" key={CandidatesStages.HrInterview}>
+              <Tabs.TabPane tab="Собеседование" key={3}>
                 <CandidateTable
-                  candidates={filterCandidates(CandidatesStages.HrInterview)}
+                  candidates={filterCandidates(CandidatesStages.Interview)}
                   onSetActive={onSetActive}
                 ></CandidateTable>
               </Tabs.TabPane>
-              <Tabs.TabPane tab="Техническое собеседование" key={CandidatesStages.TechInterview}>
-                <CandidateTable
-                  candidates={filterCandidates(CandidatesStages.TechInterview)}
-                  onSetActive={onSetActive}
-                ></CandidateTable>
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="Оффер" key={CandidatesStages.Offer}>
+              <Tabs.TabPane tab="Оффер" key={4}>
                 <CandidateTable
                   candidates={filterCandidates(CandidatesStages.Offer)}
                   onSetActive={onSetActive}

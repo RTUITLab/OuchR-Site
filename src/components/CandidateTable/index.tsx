@@ -1,8 +1,9 @@
+import { ICandidate } from '@/models/candidate';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { FC } from 'react';
 
-const columns: ColumnsType<Candidate> = [
+const columns: ColumnsType<ICandidate> = [
   {
     title: 'ФИО',
     dataIndex: 'name',
@@ -38,27 +39,8 @@ const columns: ColumnsType<Candidate> = [
   },
 ];
 
-export enum CandidatesStages {
-  'Application',
-  'Testing',
-  'HrInterview',
-  'TechInterview',
-  'Offer',
-}
-
-export interface Candidate {
-  id: string;
-  name: string;
-  stage: CandidatesStages;
-  direction: string;
-  date: string;
-  comment: string;
-  summary: string | JSX.Element;
-  more?: JSX.Element;
-}
-
 interface CandidateTableProps {
-  candidates: Candidate[];
+  candidates: ICandidate[];
   onSetActive: Function;
 }
 
@@ -71,7 +53,7 @@ const CandidateTable: FC<CandidateTableProps> = (props) => {
       onRow={(record) => {
         return {
           onClick: () => {
-            props.onSetActive(record.id);
+            props.onSetActive(record.userId);
           },
         };
       }}

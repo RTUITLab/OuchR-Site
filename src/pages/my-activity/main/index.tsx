@@ -6,6 +6,8 @@ import { FC, useEffect, useState } from 'react';
 import * as styles from './activityMain.less';
 import moment from 'moment';
 import 'moment/locale/ru';
+import { ICandidate } from '@/models/candidate';
+import { apiUrl } from '@/models/global';
 moment.locale('ru');
 
 const Info: FC<{
@@ -24,6 +26,7 @@ interface TestTask {
   id: string;
   name: string;
   intership: string;
+  pthotoUrl: string;
 }
 
 interface Interview {
@@ -31,11 +34,13 @@ interface Interview {
   name: string;
   intership: string;
   date: string;
+  pthotoUrl: string;
 }
 
 interface GoingToTest {
   id: string;
   name: string;
+  pthotoUrl: string;
 }
 
 const ActivityMain: FC = (props) => {
@@ -44,43 +49,34 @@ const ActivityMain: FC = (props) => {
   const [goingToTest, setGoingToTest] = useState<GoingToTest[]>([]);
 
   useEffect(() => {
-    let tasks: TestTask[] = [
-      {
-        id: '1',
-        name: 'Иванов Иван',
-        intership: 'Машинное обучение',
-      },
-      {
-        id: '2',
-        name: 'Геннадий Горин',
-        intership: 'Python-разработчик',
-      },
-      {
-        id: '3',
-        name: 'Анна Кубанкова',
-        intership: 'Data Science',
-      },
-      {
-        id: '4',
-        name: 'Константин Зубарев',
-        intership: 'Data Science',
-      },
-      {
-        id: '5',
-        name: 'Инга Горелова',
-        intership: 'Data Science',
-      },
-      {
-        id: '6',
-        name: 'Дмитрий Романов',
-        intership: 'Data Science',
-      },
-      {
-        id: '7',
-        name: 'N0',
-        intership: 'N0',
-      },
-    ];
+    fetch(apiUrl + 'MyCandidates/readyToCheck').then((data) => {
+      data.json().then((cand: ICandidate[]) => {
+        const task: TestTask[] = cand.map((C) => {
+          return {
+            id: C.userId,
+            name: C.name,
+            intership: C.currentIntership || '',
+            pthotoUrl: C.pthotoUrl!,
+          };
+        });
+
+        setTestTasks(task);
+      });
+    });
+
+    fetch(apiUrl + 'MyCandidates/inProgress').then((data) => {
+      data.json().then((cand: ICandidate[]) => {
+        const goingToTest: GoingToTest[] = cand.map((C) => {
+          return {
+            id: C.userId,
+            name: C.name,
+            pthotoUrl: C.pthotoUrl!,
+          };
+        });
+
+        setGoingToTest(goingToTest);
+      });
+    });
 
     let interviews: Interview[] = [
       {
@@ -88,80 +84,18 @@ const ActivityMain: FC = (props) => {
         name: 'Иванов Иван',
         intership: 'Машинное обучение',
         date: '2021-05-29T13:26:07.097Z',
-      },
-      {
-        id: '2',
-        name: 'Геннадий Горин',
-        intership: 'Python-разработчик',
-        date: '2021-05-29T13:26:07.097Z',
-      },
-      {
-        id: '3',
-        name: 'Анна Кубанкова',
-        intership: 'Data Science',
-        date: '2021-05-29T13:26:07.097Z',
-      },
-      {
-        id: '4',
-        name: 'Константин Зубарев',
-        intership: 'Data Science',
-        date: '2021-05-29T13:26:07.097Z',
-      },
-      {
-        id: '5',
-        name: 'Инга Горелова',
-        intership: 'Data Science',
-        date: '2021-05-29T13:26:07.097Z',
-      },
-      {
-        id: '6',
-        name: 'Дмитрий Романов',
-        intership: 'Data Science',
-        date: '2021-05-29T13:26:07.097Z',
-      },
-      {
-        id: '7',
-        name: 'N0',
-        intership: 'N0',
-        date: '2021-05-29T13:26:07.097Z',
+        pthotoUrl: '',
       },
     ];
 
-    let goingToTest: GoingToTest[] = [
-      {
-        id: '1',
-        name: 'Иванов Иван',
-      },
-      {
-        id: '2',
-        name: 'Геннадий Горин',
-      },
-      {
-        id: '3',
-        name: 'Анна Кубанкова',
-      },
-      {
-        id: '4',
-        name: 'Константин Зубарев',
-      },
-      {
-        id: '5',
-        name: 'Инга Горелова',
-      },
-      {
-        id: '6',
-        name: 'Дмитрий Романов',
-      },
-      {
-        id: '7',
-        name: 'N0',
-      },
-    ];
-
-    setTestTasks(tasks);
     setInterviews(interviews);
-    setGoingToTest(goingToTest);
-  });
+  }, []);
+
+  const approveTest = (id: string) => {
+    fetch(apiUrl + 'ControlFlow/approveTestResults/' + id, {
+      method: 'POST',
+    }).then(() => setTestTasks(testTasks.filter((T) => T.id !== id)));
+  };
 
   return (
     <PageContainer
@@ -206,9 +140,12 @@ const ActivityMain: FC = (props) => {
             {testTasks.map((task, index) => (
               <>
                 {index < 6 && (
-                  <Card.Grid className={styles.gridCard}>
+                  <Card.Grid className={styles.gridCard} key={index}>
                     <div className={styles.header}>
-                      <Avatar src="/rosatom_logo.png" style={{ marginBottom: '8px' }}></Avatar>
+                      <Avatar
+                        src={task.pthotoUrl!}
+                        style={{ marginBottom: '8px', borderRadius: 100 }}
+                      ></Avatar>
                       <div>{task.name}</div>
                     </div>
 
@@ -217,7 +154,7 @@ const ActivityMain: FC = (props) => {
                     </Row>
                     <Row style={{ marginTop: '8px' }}>
                       <Col>
-                        <a href="#">Принять</a>
+                        <a onClick={() => approveTest(task.id)}>Принять</a>
                       </Col>
                       <Col flex="auto">
                         <a
@@ -252,7 +189,7 @@ const ActivityMain: FC = (props) => {
                 >
                   <Skeleton avatar loading={false} title={false}>
                     <List.Item.Meta
-                      avatar={<Avatar src="/rosatom_logo.png"></Avatar>}
+                      avatar={<Avatar src={item.pthotoUrl!}></Avatar>}
                       title={item.name}
                       description={'Стажировка: ' + item.intership}
                     ></List.Item.Meta>
@@ -270,7 +207,7 @@ const ActivityMain: FC = (props) => {
                   dataSource={goingToTest}
                   renderItem={(item) => (
                     <div className={styles.goingListItem}>
-                      <Avatar src="/rosatom_logo.png"></Avatar>
+                      <Avatar src={item.pthotoUrl}></Avatar>
                       <div>{item.name}</div>
                     </div>
                   )}

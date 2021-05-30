@@ -124,3 +124,6 @@ const GlobalModel: GlobalModelType = {
 };
 
 export default GlobalModel;
+
+const apiUrl = 'http://192.168.245.113:5000/api/';
+export { apiUrl };
