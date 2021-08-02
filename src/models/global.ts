@@ -125,5 +125,5 @@ const GlobalModel: GlobalModelType = {
 
 export default GlobalModel;
 
-const apiUrl = 'http://192.168.245.113:5000/api/';
+const apiUrl = process.env.REACT_APP_ENV === 'dev' ? 'http://192.168.245.113:5000/api/' : '/api/';
 export { apiUrl };

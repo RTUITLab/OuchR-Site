@@ -1,6 +1,6 @@
 import { CandidatesStages, ICandidate } from '@/models/candidate';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
-import moment from '@ant-design/pro-utils/node_modules/moment';
+import moment from 'moment';
 import { Card, Col, Input, Row, Form, DatePicker, Button, Menu, Timeline } from 'antd';
 import { FC, useState } from 'react';
 import * as styles from './activityCandidates.less';

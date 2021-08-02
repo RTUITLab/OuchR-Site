@@ -1,7 +1,7 @@
 import { ICandidate } from '@/models/candidate';
 import { apiUrl } from '@/models/global';
 import { PageContainer } from '@ant-design/pro-layout';
-import moment from '@ant-design/pro-utils/node_modules/moment';
+import moment from 'moment';
 import { Avatar, Card, Col, Row, Skeleton, Calendar, Tooltip } from 'antd';
 import { FC, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
